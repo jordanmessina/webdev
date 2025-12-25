@@ -1,0 +1,128 @@
+/* DirectoryBrowser Component Styles */
+
+.browser {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+}
+
+.header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.currentPath {
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btnIcon {
+  background: var(--color-bg-hover);
+  border: none;
+  color: var(--color-text-primary);
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+
+.btnIcon:hover {
+  background: var(--color-bg-active);
+}
+
+.btnIconSmall {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.entries {
+  padding: 8px;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.entry:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.entryNewFolder {
+  background-color: var(--color-bg-active);
+}
+
+.entryNewFolder:hover {
+  background-color: var(--color-bg-active);
+}
+
+.entryIcon {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.entryName {
+  font-size: 14px;
+}
+
+.loading,
+.error,
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.footer {
+  padding: 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.newFolderInput {
+  flex: 1;
+  background: var(--color-bg-hover);
+  border: 1px solid var(--color-bg-active);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.newFolderInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}

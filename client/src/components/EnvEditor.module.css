@@ -1,0 +1,126 @@
+/* EnvEditor Component Styles */
+
+.modal {
+  width: 600px;
+}
+
+.modeToggle {
+  display: flex;
+  gap: 4px;
+}
+
+.modeBtn {
+  background: none;
+  border: 1px solid var(--color-accent);
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.modeBtnActive {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+.vars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.varRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.key {
+  width: 150px;
+  padding: 8px;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.value {
+  flex: 1;
+  padding: 8px;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-family: monospace;
+  resize: vertical;
+  min-height: 34px;
+  line-height: 1.4;
+}
+
+.value:focus {
+  border-color: var(--color-border-focus);
+  outline: none;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px 8px;
+  margin-top: 2px;
+}
+
+.removeBtn:hover {
+  color: var(--color-error);
+}
+
+.addBtn {
+  background: none;
+  border: 1px dashed var(--color-accent);
+  border-radius: 4px;
+  padding: 8px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.addBtn:hover {
+  border-color: var(--color-border-focus);
+  color: var(--color-text-secondary);
+}
+
+.rawEditor {
+  width: 100%;
+  height: 300px;
+  padding: 12px;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-family: monospace;
+  font-size: 13px;
+  resize: none;
+}
+
+.rawEditor:focus {
+  border-color: var(--color-border-focus);
+  outline: none;
+}
+
+.loading,
+.error {
+  padding: 20px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.error {
+  color: var(--color-error);
+}
