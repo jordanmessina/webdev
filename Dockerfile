@@ -1,5 +1,5 @@
 # WebDev Dockerfile
-# Next.js app with tmux and CLI tools for terminal sessions
+# Express + Vite app with tmux and CLI tools for terminal sessions
 
 FROM node:22
 
@@ -15,19 +15,26 @@ RUN apt-get update && apt-get install -y \
 # Install Gemini CLI globally (as root)
 RUN npm install -g @google/gemini-cli
 
+# Install Codex CLI globally (as root)
+RUN npm install -g @openai/codex
+
 WORKDIR /app
 
-# Copy package files and install dependencies as root first
+# Copy package files and install server dependencies
 COPY package*.json ./
 RUN npm install
+
+# Copy client package files and install client dependencies
+COPY client/package*.json ./client/
+RUN cd client && npm install
 
 # Copy source and build
 COPY . .
 RUN npm run build
 
 # Create directories that will be mounted as volumes and set ownership
-RUN mkdir -p /home/node/.webdev /home/node/.claude /home/node/.gemini \
-    && chown -R node:node /home/node/.webdev /home/node/.claude /home/node/.gemini
+RUN mkdir -p /home/node/.webdev /home/node/.claude /home/node/.codex /home/node/.gemini \
+    && chown -R node:node /home/node/.webdev /home/node/.claude /home/node/.codex /home/node/.gemini
 
 # Change ownership to node user
 RUN chown -R node:node /app
@@ -43,5 +50,5 @@ ENV PATH="/home/node/.local/bin:$PATH"
 
 EXPOSE 3000
 
-# Run the custom server in production mode
+# Run the Express server in production mode
 CMD ["npm", "run", "start"]
