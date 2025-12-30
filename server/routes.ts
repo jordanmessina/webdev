@@ -9,7 +9,7 @@ import multer from "multer";
 
 import { config } from "./lib/config";
 import { broadcastSessionsChanged } from "./index";
-import { loadSessions, createSession, getSessionAsync, deleteSession, updateSession } from "./lib/sessions";
+import { loadSessions, createSession, getSessionAsync, deleteSession, updateSession, reorderSessions } from "./lib/sessions";
 import { getCli, clis } from "./lib/cli";
 import type { CLIOption } from "./types";
 import {
@@ -141,6 +141,23 @@ router.patch("/api/sessions/:id", async (req: Request, res: Response) => {
   }
   broadcastSessionsChanged();
   res.json({ session });
+});
+
+router.put("/api/sessions/order", async (req: Request, res: Response) => {
+  const { order } = req.body;
+
+  if (!Array.isArray(order) || !order.every((id) => typeof id === "string")) {
+    return res.status(400).json({ error: "Invalid order array" });
+  }
+
+  try {
+    const sessions = await reorderSessions(order);
+    broadcastSessionsChanged();
+    res.json({ sessions });
+  } catch (err) {
+    console.error("Error reordering sessions:", err);
+    res.status(500).json({ error: "Failed to reorder sessions" });
+  }
 });
 
 router.delete("/api/sessions/:id", async (req: Request, res: Response) => {

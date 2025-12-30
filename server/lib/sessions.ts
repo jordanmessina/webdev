@@ -98,3 +98,28 @@ export async function updateSession(
   await saveSessions(sessions);
   return sessions[index];
 }
+
+export async function reorderSessions(orderedIds: string[]): Promise<Session[]> {
+  const sessions = await loadSessions();
+
+  // Create a map for quick lookup
+  const sessionMap = new Map(sessions.map((s) => [s.id, s]));
+
+  // Build reordered array based on provided IDs
+  const reordered: Session[] = [];
+  for (const id of orderedIds) {
+    const session = sessionMap.get(id);
+    if (session) {
+      reordered.push(session);
+      sessionMap.delete(id);
+    }
+  }
+
+  // Append any sessions not in the ordered list (shouldn't happen, but safety)
+  for (const session of sessionMap.values()) {
+    reordered.push(session);
+  }
+
+  await saveSessions(reordered);
+  return reordered;
+}

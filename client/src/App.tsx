@@ -37,6 +37,10 @@ export default function App() {
   // Session renaming state
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
 
+  // Drag and drop state
+  const [draggedSessionId, setDraggedSessionId] = useState<string | null>(null);
+  const [dropTargetId, setDropTargetId] = useState<string | null>(null);
+
   const terminalRef = useRef<TerminalHandle>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
@@ -202,6 +206,70 @@ export default function App() {
     }
   };
 
+  // Drag and drop handlers
+  const handleDragStart = (e: React.DragEvent, sessionId: string) => {
+    setDraggedSessionId(sessionId);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", sessionId);
+  };
+
+  const handleDragOver = (e: React.DragEvent, sessionId: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (sessionId !== draggedSessionId) {
+      setDropTargetId(sessionId);
+    }
+  };
+
+  const handleDragLeave = () => {
+    setDropTargetId(null);
+  };
+
+  const handleDrop = async (e: React.DragEvent, targetSessionId: string) => {
+    e.preventDefault();
+    setDropTargetId(null);
+
+    if (!draggedSessionId || draggedSessionId === targetSessionId) {
+      setDraggedSessionId(null);
+      return;
+    }
+
+    // Calculate new order
+    const oldIndex = sessions.findIndex((s) => s.id === draggedSessionId);
+    const newIndex = sessions.findIndex((s) => s.id === targetSessionId);
+
+    if (oldIndex === -1 || newIndex === -1) {
+      setDraggedSessionId(null);
+      return;
+    }
+
+    // Reorder locally first for immediate feedback
+    const newSessions = [...sessions];
+    const [removed] = newSessions.splice(oldIndex, 1);
+    newSessions.splice(newIndex, 0, removed);
+    setSessions(newSessions);
+
+    // Persist to server
+    try {
+      await fetch("/api/sessions/order", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order: newSessions.map((s) => s.id) }),
+      });
+    } catch (err) {
+      console.error("Failed to save session order:", err);
+      // Revert on error
+      fetchSessions();
+    }
+
+    setDraggedSessionId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedSessionId(null);
+    setDropTargetId(null);
+  };
+
   const openNewSessionModal = () => {
     setShowNewSessionModal(true);
     setNewSessionStep(1);
@@ -326,8 +394,14 @@ export default function App() {
           {sessions.map((session) => (
             <div
               key={session.id}
-              className={`${styles.sessionItem} ${activeSessionId === session.id ? styles.sessionItemActive : ""}`}
+              className={`${styles.sessionItem} ${activeSessionId === session.id ? styles.sessionItemActive : ""} ${draggedSessionId === session.id ? styles.sessionItemDragging : ""} ${dropTargetId === session.id ? styles.sessionItemDropTarget : ""}`}
               onClick={() => selectSession(session.id)}
+              draggable={editingSessionId !== session.id}
+              onDragStart={(e) => handleDragStart(e, session.id)}
+              onDragOver={(e) => handleDragOver(e, session.id)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, session.id)}
+              onDragEnd={handleDragEnd}
             >
               <div className={styles.sessionInfo}>
                 {editingSessionId === session.id ? (
