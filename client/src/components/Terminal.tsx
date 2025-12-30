@@ -137,11 +137,33 @@ const Terminal = forwardRef<TerminalHandle, TerminalProps>(({ sessionId, themeId
     if (isMobile && terminalRef.current) {
       const xtermTextarea = terminalRef.current.querySelector(".xterm-helper-textarea") as HTMLTextAreaElement;
       if (xtermTextarea) {
-        xtermTextarea.addEventListener("focus", () => {
-          // Wait for keyboard to appear
-          setTimeout(() => {
+        let hasFocus = false;
+
+        const scrollToTextarea = () => {
+          if (hasFocus) {
             xtermTextarea.scrollIntoView({ block: "center", behavior: "smooth" });
-          }, UI.IOS_KEYBOARD_DELAY_MS);
+          }
+        };
+
+        xtermTextarea.addEventListener("focus", () => {
+          hasFocus = true;
+          // Use Visual Viewport API if available (fires when keyboard actually appears)
+          if (window.visualViewport) {
+            const onViewportResize = () => {
+              scrollToTextarea();
+              window.visualViewport!.removeEventListener("resize", onViewportResize);
+            };
+            window.visualViewport.addEventListener("resize", onViewportResize);
+            // Fallback timeout in case resize doesn't fire (e.g., keyboard already open)
+            setTimeout(scrollToTextarea, UI.IOS_KEYBOARD_DELAY_MS);
+          } else {
+            // Fallback for older browsers
+            setTimeout(scrollToTextarea, UI.IOS_KEYBOARD_DELAY_MS);
+          }
+        });
+
+        xtermTextarea.addEventListener("blur", () => {
+          hasFocus = false;
         });
       }
     }
