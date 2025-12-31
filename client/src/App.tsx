@@ -421,7 +421,7 @@ export default function App() {
                       className={styles.sessionName}
                       onDoubleClick={(e) => startEditingSession(session, e)}
                     >
-                      <span className={styles.sessionBadge}>
+                      <span className={`${styles.sessionBadge} ${session.active ? styles.sessionBadgeActive : ""}`}>
                         {session.executable === "gemini" ? "🔵" : session.executable === "codex" ? "🟢" : "🟠"}
                       </span>
                       {session.name}

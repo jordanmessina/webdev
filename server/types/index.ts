@@ -12,6 +12,7 @@ export interface Session {
   executable: string;
   options: string[];
   createdAt: string;
+  active: boolean;
 }
 
 export interface SessionsData {

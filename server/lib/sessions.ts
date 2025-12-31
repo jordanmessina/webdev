@@ -68,6 +68,7 @@ export async function createSession(
     executable,
     options,
     createdAt: new Date().toISOString(),
+    active: false,
   };
   sessions.push(session);
   await saveSessions(sessions);
@@ -87,7 +88,7 @@ export async function deleteSession(id: string): Promise<boolean> {
 
 export async function updateSession(
   id: string,
-  updates: Partial<Pick<Session, "name">>
+  updates: Partial<Pick<Session, "name" | "active">>
 ): Promise<Session | null> {
   const sessions = await loadSessions();
   const index = sessions.findIndex((s) => s.id === id);

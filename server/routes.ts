@@ -143,6 +143,21 @@ router.patch("/api/sessions/:id", async (req: Request, res: Response) => {
   res.json({ session });
 });
 
+router.patch("/api/sessions/:id/active", async (req: Request, res: Response) => {
+  const { active } = req.body;
+
+  if (typeof active !== "boolean") {
+    return res.status(400).json({ error: "active must be a boolean" });
+  }
+
+  const session = await updateSession(req.params.id, { active });
+  if (!session) {
+    return res.status(404).json({ error: "Session not found" });
+  }
+  broadcastSessionsChanged();
+  res.json({ session });
+});
+
 router.put("/api/sessions/order", async (req: Request, res: Response) => {
   const { order } = req.body;
 
