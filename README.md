@@ -47,6 +47,82 @@ Environment variables (set in `.env`):
 | `CODEX_HOME` | Codex config directory | `~/.codex` |
 | `GEMINI_DIR` | Gemini config directory | `~/.gemini` |
 
+## Claude Code Hooks (Activity Indicator)
+
+WebDev can show a pulsing indicator on sessions when Claude is actively processing. This works via Claude Code hooks that call the WebDev API.
+
+### Setup
+
+**1. Create the hook script at `~/.claude/hooks/set-active.sh`:**
+
+```bash
+#!/bin/bash
+ACTIVE=${1:-false}
+SESSION_NAME=$(tmux display-message -p '#S' 2>/dev/null)
+SESSION_ID=${SESSION_NAME#webdev_}
+
+# Only call API if we're in a webdev tmux session
+if [[ -n "$SESSION_ID" && "$SESSION_ID" != "$SESSION_NAME" ]]; then
+  curl -s -X PATCH "http://localhost:3000/api/sessions/$SESSION_ID/active" \
+    -H "Content-Type: application/json" \
+    -d "{\"active\": $ACTIVE}" \
+    --max-time 5 \
+    >/dev/null 2>&1
+fi
+
+exit 0
+```
+
+**2. Make it executable:**
+
+```bash
+chmod +x ~/.claude/hooks/set-active.sh
+```
+
+**3. Add hooks to `~/.claude/settings.json`:**
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/set-active.sh true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/set-active.sh false"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**4. Restart Claude Code** for the hooks to take effect.
+
+### How It Works
+
+- `UserPromptSubmit` fires when you send a prompt → sets `active: true` → badge pulses
+- `Stop` fires when Claude finishes responding → sets `active: false` → badge stops pulsing
+- The hook detects if it's running inside a `webdev_*` tmux session and extracts the session ID
+- Sessions outside WebDev are silently ignored
+
+### API Endpoint
+
+| Method | Endpoint | Body | Description |
+|--------|----------|------|-------------|
+| `PATCH` | `/api/sessions/:id/active` | `{ "active": true }` | Set session active state |
+
 ## Operational Notes
 
 - tmux session names are `webdev_<sessionId>` (useful for manual inspection/cleanup).
