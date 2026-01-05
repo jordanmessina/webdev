@@ -123,8 +123,10 @@ function handleTerminalConnection(ws: WebSocket, sessionId: string) {
   activeConnections.add(ws);
 
   // Get the command for this CLI
+  // Use buildResumeCommand to auto-add resume flag if conversation exists
+  // (handles case where tmux died but session still in sessions.json)
   const cli = getCli(session.executable);
-  const command = cli ? cli.buildCommand(session.options) : null;
+  const command = cli ? cli.buildResumeCommand(session.options, session.directory) : null;
 
   // Spawn PTY with tmux
   // -A flag: attach to existing session if it exists, otherwise create new
