@@ -1,11 +1,15 @@
-/* DirectoryBrowser Component Styles */
-
+/* ============================================
+   Directory Browser
+   ============================================ */
 .browser {
   display: flex;
   flex-direction: column;
   height: 400px;
 }
 
+/* ============================================
+   Header
+   ============================================ */
 .header {
   padding: 12px 16px;
   border-bottom: 1px solid var(--color-border);
@@ -17,8 +21,8 @@
 }
 
 .currentPath {
-  font-family: monospace;
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   color: var(--color-text-muted);
   flex: 1;
   min-width: 0;
@@ -27,23 +31,28 @@
   white-space: nowrap;
 }
 
+/* ============================================
+   Icon Buttons
+   ============================================ */
 .btnIcon {
   background: var(--color-bg-hover);
-  border: none;
-  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
   width: 28px;
   height: 28px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.15s;
+  transition: all var(--transition-fast);
 }
 
 .btnIcon:hover {
   background: var(--color-bg-active);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
 }
 
 .btnIconSmall {
@@ -52,6 +61,9 @@
   font-size: 12px;
 }
 
+/* ============================================
+   Content Area
+   ============================================ */
 .content {
   flex: 1;
   overflow-y: auto;
@@ -65,9 +77,9 @@
   display: flex;
   align-items: center;
   padding: 10px 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: all var(--transition-fast);
 }
 
 .entry:hover {
@@ -75,34 +87,44 @@
 }
 
 .entryNewFolder {
-  background-color: var(--color-bg-active);
+  background-color: var(--color-accent-muted);
+  border: 1px solid rgba(91, 141, 239, 0.2);
 }
 
 .entryNewFolder:hover {
-  background-color: var(--color-bg-active);
+  background-color: var(--color-accent-muted);
 }
 
 .entryIcon {
   margin-right: 10px;
   font-size: 16px;
+  opacity: 0.7;
 }
 
 .entryName {
-  font-size: 14px;
+  font-size: 13px;
+  color: var(--color-text-primary);
 }
 
+/* ============================================
+   States
+   ============================================ */
 .loading,
 .error,
 .empty {
-  padding: 20px;
+  padding: 24px;
   text-align: center;
   color: var(--color-text-muted);
+  font-size: 13px;
 }
 
 .error {
   color: var(--color-error);
 }
 
+/* ============================================
+   Footer
+   ============================================ */
 .footer {
   padding: 16px;
   border-top: 1px solid var(--color-border);
@@ -111,18 +133,23 @@
   gap: 10px;
 }
 
+/* ============================================
+   New Folder Input
+   ============================================ */
 .newFolderInput {
   flex: 1;
-  background: var(--color-bg-hover);
-  border: 1px solid var(--color-bg-active);
-  border-radius: 4px;
-  padding: 6px 10px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
   color: var(--color-text-primary);
-  font-size: 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   margin-right: 8px;
+  transition: all var(--transition-fast);
 }
 
 .newFolderInput:focus {
   outline: none;
-  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
 }

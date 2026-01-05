@@ -1,4 +1,4 @@
-export type ThemeId = "midnight" | "sandstone" | "verdant";
+export type ThemeId = "dark" | "light";
 
 export type Theme = {
   id: ThemeId;
@@ -15,100 +15,92 @@ export type Theme = {
 
 export const THEMES: Theme[] = [
   {
-    id: "midnight",
-    name: "Midnight",
+    id: "dark",
+    name: "Dark",
     cssVars: {
-      "--color-bg-primary": "#0f0f1a",
-      "--color-bg-secondary": "#16162a",
-      "--color-bg-tertiary": "#1a1a2e",
-      "--color-bg-hover": "#2d2d4a",
-      "--color-bg-active": "#1e1e3a",
-      "--color-border": "#2d2d4a",
-      "--color-border-focus": "#5d5d8b",
-      "--color-text-primary": "#eaeaea",
-      "--color-text-secondary": "#b0b0c0",
-      "--color-text-muted": "#666666",
-      "--color-accent": "#3d3d6b",
-      "--color-accent-hover": "#4d4d7b",
-      "--color-primary": "#6366f1",
-      "--color-success": "#22c55e",
-      "--color-error": "#ff6666",
-      "--color-link": "#7dd3fc",
-      "--color-link-bg-hover": "#1e3a5f",
+      // Backgrounds - rich near-black with subtle depth
+      "--color-bg-primary": "#09090B",
+      "--color-bg-secondary": "#0F0F12",
+      "--color-bg-tertiary": "#18181B",
+      "--color-bg-hover": "#1F1F23",
+      "--color-bg-active": "#27272B",
+
+      // Borders - subtle, not harsh
+      "--color-border": "#27272A",
+      "--color-border-focus": "#3F3F46",
+
+      // Text - clear hierarchy
+      "--color-text-primary": "#FAFAFA",
+      "--color-text-secondary": "#A1A1AA",
+      "--color-text-muted": "#71717A",
+
+      // Accent - professional blue
+      "--color-accent": "#5B8DEF",
+      "--color-accent-hover": "#4A7ADB",
+      "--color-accent-muted": "rgba(91, 141, 239, 0.15)",
+
+      // Semantic colors
+      "--color-primary": "#5B8DEF",
+      "--color-success": "#22C55E",
+      "--color-error": "#EF4444",
+      "--color-warning": "#F59E0B",
+      "--color-link": "#5B8DEF",
+      "--color-link-bg-hover": "rgba(91, 141, 239, 0.1)",
     },
     terminal: {
-      background: "#1a1a2e",
-      foreground: "#eaeaea",
-      cursor: "#eaeaea",
-      cursorAccent: "#1a1a2e",
-      selectionBackground: "#3d3d5c",
+      background: "#0F0F12",
+      foreground: "#E4E4E7",
+      cursor: "#5B8DEF",
+      cursorAccent: "#0F0F12",
+      selectionBackground: "#27272A",
     },
   },
   {
-    id: "sandstone",
-    name: "Sandstone",
+    id: "light",
+    name: "Light",
     cssVars: {
-      "--color-bg-primary": "#15120d",
-      "--color-bg-secondary": "#1c1812",
-      "--color-bg-tertiary": "#231e16",
-      "--color-bg-hover": "#2e271c",
-      "--color-bg-active": "#262017",
-      "--color-border": "#3a3124",
-      "--color-border-focus": "#9a7f55",
-      "--color-text-primary": "#f2e6d5",
-      "--color-text-secondary": "#cbb89f",
-      "--color-text-muted": "#7f6d58",
-      "--color-accent": "#8b6b3f",
-      "--color-accent-hover": "#a67f4a",
-      "--color-primary": "#e0b76f",
-      "--color-success": "#8bcf9b",
-      "--color-error": "#f08a6b",
-      "--color-link": "#a5d6ff",
-      "--color-link-bg-hover": "#2a2a2a",
+      // Backgrounds - warm whites
+      "--color-bg-primary": "#FFFFFF",
+      "--color-bg-secondary": "#FAFAFA",
+      "--color-bg-tertiary": "#F4F4F5",
+      "--color-bg-hover": "#E4E4E7",
+      "--color-bg-active": "#D4D4D8",
+
+      // Borders
+      "--color-border": "#E4E4E7",
+      "--color-border-focus": "#A1A1AA",
+
+      // Text
+      "--color-text-primary": "#09090B",
+      "--color-text-secondary": "#52525B",
+      "--color-text-muted": "#71717A",
+
+      // Accent - same blue
+      "--color-accent": "#5B8DEF",
+      "--color-accent-hover": "#4A7ADB",
+      "--color-accent-muted": "rgba(91, 141, 239, 0.12)",
+
+      // Semantic colors
+      "--color-primary": "#5B8DEF",
+      "--color-success": "#16A34A",
+      "--color-error": "#DC2626",
+      "--color-warning": "#D97706",
+      "--color-link": "#5B8DEF",
+      "--color-link-bg-hover": "rgba(91, 141, 239, 0.08)",
     },
     terminal: {
-      background: "#1e1a13",
-      foreground: "#f2e6d5",
-      cursor: "#f2e6d5",
-      cursorAccent: "#1e1a13",
-      selectionBackground: "#3a3024",
-    },
-  },
-  {
-    id: "verdant",
-    name: "Verdant",
-    cssVars: {
-      "--color-bg-primary": "#0f1612",
-      "--color-bg-secondary": "#151f19",
-      "--color-bg-tertiary": "#1a241e",
-      "--color-bg-hover": "#243128",
-      "--color-bg-active": "#1d281f",
-      "--color-border": "#2a3a30",
-      "--color-border-focus": "#4f8b6c",
-      "--color-text-primary": "#e2f2e6",
-      "--color-text-secondary": "#b5d2bf",
-      "--color-text-muted": "#6c8a76",
-      "--color-accent": "#2f6a4b",
-      "--color-accent-hover": "#3a7a57",
-      "--color-primary": "#3cc07a",
-      "--color-success": "#4fd18a",
-      "--color-error": "#f07b6a",
-      "--color-link": "#8fd3b7",
-      "--color-link-bg-hover": "#243128",
-    },
-    terminal: {
-      background: "#18231c",
-      foreground: "#e2f2e6",
-      cursor: "#e2f2e6",
-      cursorAccent: "#18231c",
-      selectionBackground: "#2c3a30",
+      background: "#FAFAFA",
+      foreground: "#18181B",
+      cursor: "#5B8DEF",
+      cursorAccent: "#FAFAFA",
+      selectionBackground: "#E4E4E7",
     },
   },
 ];
 
 const themeById = new Map<ThemeId, Theme>(THEMES.map((theme) => [theme.id, theme]));
 
-export const DEFAULT_THEME_ID: ThemeId = "midnight";
+export const DEFAULT_THEME_ID: ThemeId = "dark";
 
 export function getTheme(themeId: ThemeId): Theme {
   return themeById.get(themeId) || themeById.get(DEFAULT_THEME_ID)!;

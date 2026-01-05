@@ -1,16 +1,18 @@
-/* Terminal Component Styles */
-
+/* ============================================
+   Terminal Wrapper
+   ============================================ */
 .wrapper {
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
   height: 100%;
+  background-color: var(--color-bg-primary);
 }
 
 .container {
   flex: 1;
-  padding: 16px;
+  padding: 12px 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -26,32 +28,43 @@
   overflow-y: auto !important;
 }
 
+/* ============================================
+   Terminal Controls
+   ============================================ */
 .controls {
   position: absolute;
   bottom: 12px;
   right: 12px;
   z-index: 50;
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .ctrlBtn {
-  background-color: var(--color-accent);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 12px;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
   padding: 6px 10px;
   cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+  opacity: 0.8;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(8px);
 }
 
 .ctrlBtn:hover {
   opacity: 1;
-  background-color: var(--color-accent-hover);
+  background-color: var(--color-bg-hover);
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
 }
 
+/* ============================================
+   Ctrl Key Picker
+   ============================================ */
 .ctrlPickerWrapper {
   position: relative;
 }
@@ -60,12 +73,14 @@
   position: absolute;
   bottom: 100%;
   right: 0;
-  margin-bottom: 8px;
-  background: var(--color-bg-secondary);
+  margin-bottom: 6px;
+  background: var(--color-bg-tertiary);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   min-width: 140px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
 }
 
 .ctrlPickerItem {
@@ -76,30 +91,35 @@
   padding: 10px 12px;
   background: none;
   border: none;
-  color: var(--color-text);
+  color: var(--color-text-secondary);
   cursor: pointer;
   text-align: left;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
 }
 
 .ctrlPickerItem:hover {
   background: var(--color-bg-hover);
+  color: var(--color-text-primary);
 }
 
 .ctrlPickerLabel {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 13px;
 }
 
 .ctrlPickerDesc {
   font-size: 11px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
 }
 
-/* Mobile */
+/* ============================================
+   Mobile Styles
+   ============================================ */
 @media (max-width: 768px) {
   .container {
     padding: 4px;
-    margin-top: 60px;
+    margin-top: 56px;
   }
 
   .controls {
@@ -110,8 +130,8 @@
   }
 
   .ctrlBtn {
-    opacity: 0.9;
+    opacity: 0.95;
     padding: 10px 14px;
-    font-size: 14px;
+    font-size: 13px;
   }
 }

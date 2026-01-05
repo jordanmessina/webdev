@@ -42,10 +42,7 @@ export default function App() {
   const [dropTargetId, setDropTargetId] = useState<string | null>(null);
 
   const terminalRef = useRef<TerminalHandle>(null);
-  const settingsRef = useRef<HTMLDivElement>(null);
-  const settingsBtnRef = useRef<HTMLButtonElement>(null);
   const [editingName, setEditingName] = useState("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const fetchExecutables = useCallback(async () => {
     try {
@@ -85,21 +82,18 @@ export default function App() {
     window.localStorage.setItem("webdev.theme", themeId);
   }, [themeId]);
 
-  useEffect(() => {
-    if (!settingsOpen) return;
+  const toggleTheme = () => {
+    setThemeId((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (settingsRef.current?.contains(target)) return;
-      if (settingsBtnRef.current?.contains(target)) return;
-      setSettingsOpen(false);
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [settingsOpen]);
+  // CLI badge colors
+  const getBadgeColor = (executable: string) => {
+    switch (executable) {
+      case "gemini": return "#4285F4";
+      case "codex": return "#10B981";
+      default: return "#F97316"; // claude/default
+    }
+  };
 
   useEffect(() => {
     fetchExecutables();
@@ -404,6 +398,10 @@ export default function App() {
               onDragEnd={handleDragEnd}
             >
               <div className={styles.sessionInfo}>
+                <span
+                  className={`${styles.sessionBadge} ${session.active ? styles.sessionBadgeActive : ""}`}
+                  style={{ backgroundColor: getBadgeColor(session.executable) }}
+                />
                 {editingSessionId === session.id ? (
                   <input
                     type="text"
@@ -416,18 +414,13 @@ export default function App() {
                     autoFocus
                   />
                 ) : (
-                  <>
-                    <div
-                      className={styles.sessionName}
-                      onDoubleClick={(e) => startEditingSession(session, e)}
-                    >
-                      <span className={`${styles.sessionBadge} ${session.active ? styles.sessionBadgeActive : ""}`}>
-                        {session.executable === "gemini" ? "🔵" : session.executable === "codex" ? "🟢" : "🟠"}
-                      </span>
-                      {session.name}
-                    </div>
+                  <div
+                    className={styles.sessionDetails}
+                    onDoubleClick={(e) => startEditingSession(session, e)}
+                  >
+                    <div className={styles.sessionName}>{session.name}</div>
                     <div className={styles.sessionDir}>{session.directory}</div>
-                  </>
+                  </div>
                 )}
               </div>
               <button
@@ -441,33 +434,13 @@ export default function App() {
         </div>
         <div className={styles.sidebarFooter}>
           <button
-            ref={settingsBtnRef}
-            className={styles.settingsBtn}
-            onClick={() => setSettingsOpen((prev) => !prev)}
-            aria-label="Open settings"
-            title="Settings"
+            className={styles.themeToggle}
+            onClick={toggleTheme}
+            aria-label={`Switch to ${themeId === "dark" ? "light" : "dark"} mode`}
+            title={`Switch to ${themeId === "dark" ? "light" : "dark"} mode`}
           >
-            ⚙
+            {themeId === "dark" ? "☀" : "☾"}
           </button>
-          {settingsOpen && (
-            <div ref={settingsRef} className={styles.settingsPopover}>
-              <div className={styles.settingsTitle}>Settings</div>
-              <div className={styles.settingsRow}>
-                <span className={styles.settingsLabel}>Theme</span>
-                <select
-                  className={styles.settingsSelect}
-                  value={themeId}
-                  onChange={(e) => setThemeId(e.target.value as ThemeId)}
-                >
-                  {THEMES.map((theme) => (
-                    <option key={theme.id} value={theme.id}>
-                      {theme.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          )}
         </div>
       </aside>
 
@@ -531,9 +504,16 @@ export default function App() {
                         className={`${styles.cliOption} ${selectedExecutable === exec.id ? styles.cliOptionSelected : ""}`}
                         onClick={() => handleExecutableChange(exec.id)}
                       >
-                        <span className={styles.cliIcon}>
-                          {exec.id === "claude" ? "🟠" : exec.id === "codex" ? "🟢" : "🔵"}
-                        </span>
+                        <span
+                          className={styles.cliIcon}
+                          style={{
+                            width: 12,
+                            height: 12,
+                            borderRadius: "50%",
+                            backgroundColor: getBadgeColor(exec.id),
+                            display: "inline-block",
+                          }}
+                        />
                         <span className={styles.cliName}>{exec.name}</span>
                       </div>
                     ))}
@@ -578,8 +558,17 @@ export default function App() {
                   <div className={styles.summaryCard}>
                     <div className={styles.summaryRow}>
                       <span className={styles.summaryLabel}>CLI</span>
-                      <span className={styles.summaryValue}>
-                        {selectedExec?.id === "claude" ? "🟠" : selectedExec?.id === "codex" ? "🟢" : "🔵"} {selectedExec?.name}
+                      <span className={styles.summaryValue} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            backgroundColor: getBadgeColor(selectedExec?.id || "claude"),
+                            display: "inline-block",
+                          }}
+                        />
+                        {selectedExec?.name}
                       </span>
                     </div>
                     <div className={styles.summaryRow}>

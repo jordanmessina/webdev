@@ -60,7 +60,7 @@ export const FILES = {
 
 export const SERVER = {
   /** Default port */
-  DEFAULT_PORT: 3000,
+  DEFAULT_PORT: 8000,
 
   /** Graceful shutdown timeout (ms) */
   SHUTDOWN_TIMEOUT_MS: 5000,

@@ -1,29 +1,47 @@
-/* EnvEditor Component Styles */
-
+/* ============================================
+   Env Editor Modal
+   ============================================ */
 .modal {
   width: 600px;
 }
 
+/* ============================================
+   Mode Toggle
+   ============================================ */
 .modeToggle {
   display: flex;
   gap: 4px;
+  background: var(--color-bg-primary);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
 }
 
 .modeBtn {
   background: none;
-  border: 1px solid var(--color-accent);
-  border-radius: 4px;
-  padding: 4px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-family: var(--font-sans);
   font-size: 12px;
+  font-weight: 500;
   color: var(--color-text-muted);
   cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.modeBtn:hover {
+  color: var(--color-text-secondary);
 }
 
 .modeBtnActive {
-  background-color: var(--color-accent);
-  color: #fff;
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
 }
 
+/* ============================================
+   Variables List
+   ============================================ */
 .vars {
   display: flex;
   flex-direction: column;
@@ -37,32 +55,41 @@
 }
 
 .key {
-  width: 150px;
-  padding: 8px;
+  width: 140px;
+  padding: 8px 10px;
   background-color: var(--color-bg-primary);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
-  color: var(--color-text-muted);
-  font-size: 13px;
-  font-family: monospace;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  transition: all var(--transition-fast);
+}
+
+.key:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
+  outline: none;
 }
 
 .value {
   flex: 1;
-  padding: 8px;
+  padding: 8px 10px;
   background-color: var(--color-bg-primary);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--color-text-primary);
-  font-size: 13px;
-  font-family: monospace;
+  font-family: var(--font-mono);
+  font-size: 12px;
   resize: vertical;
   min-height: 34px;
   line-height: 1.4;
+  transition: all var(--transition-fast);
 }
 
 .value:focus {
-  border-color: var(--color-border-focus);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
   outline: none;
 }
 
@@ -70,55 +97,73 @@
   background: none;
   border: none;
   color: var(--color-text-muted);
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
-  padding: 6px 8px;
-  margin-top: 2px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .removeBtn:hover {
   color: var(--color-error);
+  background-color: rgba(239, 68, 68, 0.1);
 }
 
 .addBtn {
   background: none;
-  border: 1px dashed var(--color-accent);
-  border-radius: 4px;
-  padding: 8px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
   color: var(--color-text-muted);
+  font-family: var(--font-sans);
   font-size: 13px;
   cursor: pointer;
   margin-top: 8px;
+  transition: all var(--transition-fast);
 }
 
 .addBtn:hover {
   border-color: var(--color-border-focus);
   color: var(--color-text-secondary);
+  background-color: var(--color-bg-hover);
 }
 
+/* ============================================
+   Raw Editor
+   ============================================ */
 .rawEditor {
   width: 100%;
   height: 300px;
   padding: 12px;
   background-color: var(--color-bg-primary);
   border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   color: var(--color-text-primary);
-  font-family: monospace;
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
   resize: none;
+  transition: all var(--transition-fast);
 }
 
 .rawEditor:focus {
-  border-color: var(--color-border-focus);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
   outline: none;
 }
 
+/* ============================================
+   States
+   ============================================ */
 .loading,
 .error {
-  padding: 20px;
+  padding: 24px;
   text-align: center;
   color: var(--color-text-muted);
+  font-size: 14px;
 }
 
 .error {
