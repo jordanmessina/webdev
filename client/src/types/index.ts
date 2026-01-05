@@ -13,6 +13,7 @@ export interface Session {
   options: string[];
   createdAt: string;
   active: boolean;
+  started: boolean;
 }
 
 export interface SessionsData {

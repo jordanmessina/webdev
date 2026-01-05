@@ -5,7 +5,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import * as pty from "node-pty";
 import { watch, FSWatcher } from "chokidar";
 import path from "path";
-import { getSession } from "./lib/sessions";
+import { getSession, updateSession } from "./lib/sessions";
 import { getCli } from "./lib/cli";
 import { SERVER, FILES } from "./lib/constants";
 import type { WSServerMessage } from "./types";
@@ -36,7 +36,7 @@ let server: Server;
 let wss: WebSocketServer;
 
 function getTmuxName(sessionId: string): string {
-  return `webdev_${sessionId}`;
+  return `webdev-${sessionId}`;
 }
 
 function sendMessage(ws: WebSocket, message: WSServerMessage): void {
@@ -123,10 +123,21 @@ function handleTerminalConnection(ws: WebSocket, sessionId: string) {
   activeConnections.add(ws);
 
   // Get the command for this CLI
-  // Use buildResumeCommand to auto-add resume flag if conversation exists
-  // (handles case where tmux died but session still in sessions.json)
+  // If session hasn't started yet, use user's selected options (first launch)
+  // If session already started (reconnecting after tmux died), auto-add resume flag
   const cli = getCli(session.executable);
-  const command = cli ? cli.buildResumeCommand(session.options, session.directory) : null;
+  let command: string | null = null;
+  if (cli) {
+    if (session.started) {
+      // Reconnecting - auto-resume conversation
+      command = cli.buildResumeCommand(session.options, session.directory);
+    } else {
+      // First launch - use exactly what user selected
+      command = cli.buildCommand(session.options);
+      // Mark as started (fire and forget, don't block on this)
+      updateSession(sessionId, { started: true });
+    }
+  }
 
   // Spawn PTY with tmux
   // -A flag: attach to existing session if it exists, otherwise create new

@@ -13,6 +13,7 @@ export interface Session {
   options: string[];
   createdAt: string;
   active: boolean;
+  started: boolean; // true after first tmux spawn - used to auto-resume on reconnect
 }
 
 export interface SessionsData {

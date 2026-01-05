@@ -179,7 +179,7 @@ router.delete("/api/sessions/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
 
   // Kill the tmux session first
-  const tmuxName = `webdev_${id}`;
+  const tmuxName = `webdev-${id}`;
   try {
     await execAsync(`tmux kill-session -t ${tmuxName} 2>/dev/null`);
   } catch {

@@ -59,7 +59,7 @@ WebDev can show a pulsing indicator on sessions when Claude is actively processi
 #!/bin/bash
 ACTIVE=${1:-false}
 SESSION_NAME=$(tmux display-message -p '#S' 2>/dev/null)
-SESSION_ID=${SESSION_NAME#webdev_}
+SESSION_ID=${SESSION_NAME#webdev-}
 
 # Only call API if we're in a webdev tmux session
 if [[ -n "$SESSION_ID" && "$SESSION_ID" != "$SESSION_NAME" ]]; then
@@ -114,7 +114,7 @@ chmod +x ~/.claude/hooks/set-active.sh
 
 - `UserPromptSubmit` fires when you send a prompt → sets `active: true` → badge pulses
 - `Stop` fires when Claude finishes responding → sets `active: false` → badge stops pulsing
-- The hook detects if it's running inside a `webdev_*` tmux session and extracts the session ID
+- The hook detects if it's running inside a `webdev-*` tmux session and extracts the session ID
 - Sessions outside WebDev are silently ignored
 
 ### API Endpoint
@@ -125,14 +125,13 @@ chmod +x ~/.claude/hooks/set-active.sh
 
 ## Operational Notes
 
-- tmux session names are `webdev_<sessionId>` (useful for manual inspection/cleanup).
-- UI theme selection is stored in `localStorage` under `webdev.theme`.
+- tmux session names are `webdev-<sessionId>` (useful for manual inspection/cleanup).
 
 ## Themes
 
-- Theme definitions live in `client/src/lib/themes.ts` (UI CSS variables + terminal colors).
-- The theme picker in the sidebar is populated from `THEMES` and applies immediately.
-- To add or remove a theme, update the `THEMES` list; no other wiring is needed.
+- Dark and light themes are defined in `client/src/lib/themes.ts` (UI CSS variables + terminal colors).
+- Toggle between themes using the sun/moon button in the sidebar footer.
+- Theme preference is stored in `localStorage` under `webdev.theme`.
 
 ## How It Works
 
